@@ -146,84 +146,65 @@ export function Gallery({ data }: { data: CardsJSON }) {
     <div className="min-h-screen">
       {/* ====================== HEADER ====================== */}
       <header className="sticky top-0 z-40 bg-[#050507]/80 backdrop-blur-xl border-b border-white/[.07]">
-        <div className="max-w-[1400px] mx-auto px-4 py-4 space-y-3">
-          {/* Title row */}
-          <div className="flex items-center justify-between">
-            <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight select-none">
-              <span className="text-white/50">ALTERED</span>{' '}
+        <div className="max-w-[1400px] mx-auto px-4 py-2 space-y-1.5">
+          {/* Row 1 : title + langue + compteur */}
+          <div className="flex items-center gap-3">
+            <h1 className="text-base font-extrabold tracking-tight select-none shrink-0">
+              <span className="text-white/40">ALTERED</span>{' '}
               <span className="bg-gradient-to-r from-purple-400 via-fuchsia-400 to-pink-400 bg-clip-text text-transparent">
                 FUGUE
               </span>
             </h1>
-            <span className="text-xs sm:text-sm text-white/30 tabular-nums">
-              {filtered.length}&nbsp;/&nbsp;{data.cards.length} cartes
-            </span>
+            <div className="flex gap-1 shrink-0">
+              {availableLangs.map((l) => (
+                <button
+                  key={l.code}
+                  onClick={() => setLang(l.code)}
+                  className={`px-2 py-0.5 rounded text-[11px] font-semibold transition-all ${
+                    lang === l.code
+                      ? 'bg-white text-gray-900'
+                      : 'bg-white/[.07] text-white/40 hover:text-white/60'
+                  }`}
+                >
+                  {l.flag} {l.label}
+                </button>
+              ))}
+            </div>
+            <input
+              type="text"
+              placeholder="Rechercher…"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="flex-1 min-w-0 px-2.5 py-0.5 rounded-lg bg-white/[.06] border border-white/[.08] text-xs text-white placeholder:text-white/20 focus:outline-none focus:ring-1 focus:ring-purple-500/40"
+            />
+            <span className="text-[11px] text-white/30 tabular-nums shrink-0">{filtered.length}/{data.cards.length}</span>
           </div>
 
-          {/* Language pills */}
-          <div className="flex flex-wrap gap-1.5">
-            {availableLangs.map((l) => (
-              <button
-                key={l.code}
-                onClick={() => setLang(l.code)}
-                className={`px-2.5 py-1 rounded-md text-xs font-semibold transition-all ${
-                  lang === l.code
-                    ? 'bg-white text-gray-900 shadow-md shadow-white/10'
-                    : 'bg-white/[.07] text-white/50 hover:bg-white/[.12] hover:text-white/70'
-                }`}
-              >
-                {l.flag}&ensp;{l.label}
-              </button>
-            ))}
-          </div>
-
-          {/* Faction pills */}
-          <div className="flex flex-wrap gap-1.5">
-            <Pill active={!faction} onClick={() => setFaction(null)}>
-              Toutes
-            </Pill>
+          {/* Row 2 : factions + raretés + produit */}
+          <div className="flex flex-wrap items-center gap-1">
+            <Pill active={!faction} onClick={() => setFaction(null)}>Toutes</Pill>
             {Object.entries(FACTIONS).map(([code, f]) => (
-              <Pill
-                key={code}
-                active={faction === code}
-                color={f.color}
-                onClick={() => setFaction(faction === code ? null : code)}
-              >
+              <Pill key={code} active={faction === code} color={f.color} onClick={() => setFaction(faction === code ? null : code)}>
                 {f.name}
               </Pill>
             ))}
-          </div>
-
-          {/* Rarity pills */}
-          <div className="flex flex-wrap gap-1.5">
-            <Pill active={!rarity} onClick={() => setRarity(null)}>
-              Toutes raretés
-            </Pill>
+            <span className="w-px h-4 bg-white/10 mx-0.5" />
+            <Pill active={!rarity} onClick={() => setRarity(null)}>Tout</Pill>
             {Object.entries(RARITIES).map(([code, r]) => (
-              <Pill
-                key={code}
-                active={rarity === code}
-                color={r.color}
-                onClick={() => setRarity(rarity === code ? null : code)}
-              >
-                {r.label}
+              <Pill key={code} active={rarity === code} color={r.color} onClick={() => setRarity(rarity === code ? null : code)}>
+                {r.short}
               </Pill>
             ))}
-          </div>
-
-          {/* Product toggle + search */}
-          <div className="flex gap-2">
-            <div className="flex rounded-lg overflow-hidden border border-white/[.08] shrink-0">
+            <span className="w-px h-4 bg-white/10 mx-0.5" />
+            <div className="flex rounded overflow-hidden border border-white/[.08]">
               {['A+B', 'A', 'B'].map((label) => {
                 const val = label === 'A+B' ? null : label;
                 return (
                   <button
                     key={label}
                     onClick={() => setProduct(product === val ? null : val)}
-                    className={`px-3 py-1.5 text-xs font-semibold transition-all ${
-                      product === val
-                        ? 'bg-white/15 text-white'
-                        : 'text-white/30 hover:text-white/50'
+                    className={`px-2 py-0.5 text-[11px] font-semibold transition-all ${
+                      product === val ? 'bg-white/15 text-white' : 'text-white/30 hover:text-white/50'
                     }`}
                   >
                     {label}
@@ -231,13 +212,6 @@ export function Gallery({ data }: { data: CardsJSON }) {
                 );
               })}
             </div>
-            <input
-              type="text"
-              placeholder="Rechercher une carte…"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="flex-1 min-w-0 px-3 py-1.5 rounded-lg bg-white/[.06] border border-white/[.08] text-sm text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-purple-500/40"
-            />
           </div>
         </div>
       </header>

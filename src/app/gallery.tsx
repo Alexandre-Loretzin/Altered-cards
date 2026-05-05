@@ -27,12 +27,12 @@ interface CardsJSON {
 /* ------------------------------------------------------------------ */
 
 const FACTIONS: Record<string, { name: string; color: string }> = {
-  AX: { name: 'Axiom', color: '#3b82f6' },
-  BR: { name: 'Bravos', color: '#ef4444' },
-  LY: { name: 'Lyra', color: '#eab308' },
+  AX: { name: 'Axiom', color: '#d3781d' },
+  BR: { name: 'Bravos', color: '#ea1616' },
+  LY: { name: 'Lyra', color: '#fd1fd8' },
   MU: { name: 'Muna', color: '#22c55e' },
-  OR: { name: 'Ordis', color: '#a855f7' },
-  YZ: { name: 'Yzmir', color: '#6b7280' },
+  OR: { name: 'Ordis', color: '#2436f7' },
+  YZ: { name: 'Yzmir', color: '#bd3ef8' },
 };
 
 const RARITIES: Record<string, { label: string; short: string; color: string }> = {
